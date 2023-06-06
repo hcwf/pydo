@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block title %} Registration {% endblock %}
+
+{% block content %}
+    <h1>FIDO2 Registration</h1>
+    <p>
+        Please provide an unique username and a display name (e.g. your first and last name) and then present your
+        FIDO2-token to register an account.
+    </p>
+    <div>
+        <input type="text" placeholder="Username (e.g. Email)" id="username">
+        <input type="text" placeholder="Display Name" id="dp-name">
+        <input type="button" value="Register" id="register">
+    </div>
+    <div id="status">
+        <div id="success" hidden>
+            Registration complete! Please proceed to the <a href="{{ url_for('login') }}">login</a>.
+        </div>
+        <div id="failure" hidden>
+            There was an error processing your registration. Please try again.
+        </div>
+    </div>
+    <script type="module" src="{{ url_for('static', filename='register.js') }}"></script>
+{% endblock %}

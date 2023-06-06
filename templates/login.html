@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block title %} Login {% endblock %}
+
+{% block content %}
+    <h1>FIDO2 Login</h1>
+    <p>
+        Please provide your username and then present your FIDO2-token to login.
+    </p>
+    <div>
+        <input type="text" placeholder="Username (e.g. Email)" id="username">
+        <input type="button" value="Authenticate" id="authenticate">
+    </div>
+    <div id="status">
+        <div id="success" hidden>
+            Login complete! Please wait while you're redirected.
+        </div>
+        <div id="failure" hidden>
+            There was an error processing your login. Please try again.
+        </div>
+        <div id="nocreds" hidden>
+            We couldn't find any credential data. Are you sure you've registered before?
+        </div>
+    </div>
+    <script type="module" src="{{ url_for('static', filename='login.js') }}"></script>
+{% endblock %}

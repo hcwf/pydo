@@ -1,0 +1,22 @@
+body {
+    width: 50%;
+    margin: auto;
+    text-align: center;
+    box-sizing: border-box;
+}
+
+div {
+    border-width: 1px;
+}
+
+input {
+    margin: 0.5em;
+    padding: 7px;
+    border-width: 2px;
+    border-radius: 0.5em;
+    border-color: rgb(138, 138, 138);
+}
+
+input:hover {
+    background-color: rgb(182, 228, 245);
+}

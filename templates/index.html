@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block title %} Index {% endblock %}
+
+{% block content %}
+    <h1>FIDO2 Proof-of-Concept</h1>
+    <p>
+        This is a simple FIDO2 login and registration proof-of-concept.<br>
+        If this is your first visit please register a new account.
+    </p>
+    <div>
+        <input type="button" value="Login" onclick="window.location.href='/login'">
+        <input type="button" value="Register" onclick="window.location.href='/register'">
+    </div>
+{% endblock %}

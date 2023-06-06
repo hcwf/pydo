@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>{% block title %} {% endblock %} - FIDO2 Proof-of-Concept</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    </head>
+    <body>
+        <nav>
+            <a href="{{ url_for('index') }}">Index</a>
+            {% for item in navs %}
+                <a href="{{ item.url }}">{{ item.name }}</a>
+            {% endfor %}
+        </nav>
+        <div id="content">
+            {% block content %} {% endblock %}
+        </div>
+    </body>
+</html>
