@@ -1,3 +1,9 @@
+'''
+    Author: H. Frederich (h.frederich@protonmail.com)
+    Date: 2023-06-07
+    Version: 1.0.0
+'''
+
 import fido2.features
 
 from flask import Flask, redirect, render_template, request, session
@@ -9,12 +15,13 @@ import api
 # Transforms bytes into JSON-friendly Base64 encoded strings.
 fido2.features.webauthn_json_mapping.enabled = True
 
+# Creating a new Flask app.
 app = Flask(import_name=__name__, static_url_path='')
 
-# Secret key for signing the session cookie
+# Secret key for signing the session cookie.
 app.secret_key = token_bytes(nbytes=32)
 
-# Registering the API blueprint
+# Registering the API blueprint.
 app.register_blueprint(blueprint=api.bp)
 
 
@@ -25,36 +32,42 @@ def index():
 
 @app.route('/register')
 def register():
+    if check_login_status():
+        return redirect('/')
+
     return render_template('register.html')
 
 
 @app.route('/login')
 def login():
+    if check_login_status():
+        return redirect('/')
+
     return render_template('login.html')
 
 
 @app.route('/logout')
 def logout():
-    return render_template('logout.html')
+    # Removing the user information from the session, thereby logging them out.
+    session.pop('username')
+    session.pop('display_name')
+
+    return redirect('/')
 
 
 @app.context_processor
+def display_status():
+    if check_login_status():
+        return dict(login=True)
+
+    return dict(login=False)
+
+
 def check_login_status():
-    navs = None
-
     if 'username' in session:
-        username = session['username']
-        display_name = session['username']
+        return True
 
-        navs = [{'url': "/logout",
-                 'name': 'Logout'}]
-    else:
-        navs = [{'url': '/login',
-                 'name': 'Login'},
-                {'url': '/register',
-                 'name': 'Register'}]
-
-    return dict(navs=navs)
+    return False
 
 
 if __name__ == '__main__':

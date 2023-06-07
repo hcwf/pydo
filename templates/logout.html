@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block title %} Logout {% endblock %}
+
+{% block content %}
+    <h1>Logout</h1>
+    <div id="waiting">
+        Please wait while you're being logged out.
+    </div>
+    <div id="success" hidden>
+        You successfully logged out!
+    </div>
+    <script type="module" src="{{ url_for('static', filename='logout.js') }}"></script>
+{% endblock %}

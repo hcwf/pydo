@@ -5,20 +5,21 @@
 {% block content %}
     <h1>FIDO2 Login</h1>
     <p>
-        Please provide your username and then present your FIDO2-token to login.
+        Please click 'Authenticate' and then present your FIDO2-token to login.<br>
+        You don't need to provide your username to be able to login.
     </p>
-    <div>
-        <input type="text" placeholder="Username (e.g. Email)" id="username">
+    <form>
         <input type="button" value="Authenticate" id="authenticate">
-    </div>
+    </form>
     <div id="status">
         <div id="success" hidden>
             Login complete! Please wait while you're redirected.
+            If this process takes more than five seconds, please use this <a href="{{ url_for('index') }}">login</a> link.
         </div>
         <div id="failure" hidden>
             There was an error processing your login. Please try again.
         </div>
-        <div id="nocreds" hidden>
+        <div id="no_creds" hidden>
             We couldn't find any credential data. Are you sure you've registered before?
         </div>
     </div>

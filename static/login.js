@@ -1,3 +1,9 @@
+/**
+ * Author: H. Frederich (h.frederich@protonmail.com)
+ * Date: 2023-06-07
+ * Version: 1.0.0
+ */
+
 import {get, parseRequestOptionsFromJSON} from './webauthn-json.browser-ponyfill.js';
 
 'use strict';
@@ -15,7 +21,7 @@ async function authenticate() {
         body: JSON.stringify(userData)
     });
     if(!request.ok) {
-        document.getElementById('nocreds').hidden = false;
+        document.getElementById('no_creds').hidden = false;
     }
 
     let json = await request.json();
@@ -39,12 +45,16 @@ async function authenticate() {
     console.log('Authentication successful!');
     console.log(result.json());
 
-    window
+    // Wait three seconds before redirecting the user to the starting page.
+    // This is to show the login was successful.
+    setTimeout(() => {
+        window.location.replace('/');
+    }, 5000);
 }
 
 document.getElementById('authenticate').addEventListener('click', () => {
     authenticate();
     document.getElementById('success').hidden = true;
     document.getElementById('failure').hidden = true;
-    document.getElementById('nocreds').hidden = true;
+    document.getElementById('no_creds').hidden = true;
 });

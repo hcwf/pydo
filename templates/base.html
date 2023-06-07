@@ -7,10 +7,20 @@
     <body>
         <nav>
             <a href="{{ url_for('index') }}">Index</a>
-            {% for item in navs %}
-                <a href="{{ item.url }}">{{ item.name }}</a>
-            {% endfor %}
+            {% if login %}
+                <a href="{{ url_for('logout') }}">Logout</a>
+            {% else %}
+                <a href="{{ url_for('login') }}">Login</a>
+                <a href="{{ url_for('register') }}">Register</a>
+            {% endif %}
         </nav>
+        <div id="user">
+            {% if login %}
+                Welcome, {{ session['display_name'] }}!
+            {% else %}
+                You are currently not logged in.
+            {% endif %}
+        </div>
         <div id="content">
             {% block content %} {% endblock %}
         </div>

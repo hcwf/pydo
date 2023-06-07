@@ -1,3 +1,9 @@
+/**
+ * Author: H. Frederich (h.frederich@protonmail.com)
+ * Date: 2023-06-07
+ * Version: 1.0.0
+ */
+
 import {create, parseCreationOptionsFromJSON} from './webauthn-json.browser-ponyfill.js';
 
 'use strict';
@@ -6,7 +12,7 @@ async function register() {
     // Reading the username and display name to send with the fetch request.
     let userData = {
         'username': document.getElementById('username').value,
-        'display_name': document.getElementById('dp-name').value,
+        'display_name': document.getElementById('display_name').value,
     };
 
     console.log('Fetching registration challenge:', userData);
@@ -39,10 +45,21 @@ async function register() {
     document.getElementById('success').hidden = false;
     console.log('Registration successful!');
     console.log(result.json());
+
+    // Wait three seconds before redirecting the user to the login.
+    // This is to show the registration was successful.
+    setTimeout(() => {
+        window.location.replace('/login');
+    }, 5000);
 }
 
 document.getElementById('register').addEventListener('click', () => {
-    register();
-    document.getElementById('success').hidden = true;
-    document.getElementById('failure').hidden = true;
+    if(document.getElementById('username').value.length > 1 && document.getElementById('display_name').value.length > 1) {
+        register();
+        document.getElementById('success').hidden = true;
+        document.getElementById('failure').hidden = true;
+        document.getElementById('too_short').hidden = true;
+    } else {
+        document.getElementById('too_short').hidden = false;
+    }
 });

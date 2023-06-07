@@ -5,11 +5,12 @@
 {% block content %}
     <h1>FIDO2 Proof-of-Concept</h1>
     <p>
-        This is a simple FIDO2 login and registration proof-of-concept.<br>
-        If this is your first visit please register a new account.
+        This is a simple FIDO2 login and registration proof-of-concept.
     </p>
-    <div>
-        <input type="button" value="Login" onclick="window.location.href='/login'">
-        <input type="button" value="Register" onclick="window.location.href='/register'">
-    </div>
+    {% if login %}
+        You are successfully logged in!
+    {% else %}
+        If this is your first visit, please <a href="{{ url_for('register') }}">register</a> a new account.
+        If you've been here before, please <a href="{{ url_for('login') }}">login</a>.
+    {% endif %}
 {% endblock %}

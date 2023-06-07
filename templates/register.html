@@ -8,17 +8,21 @@
         Please provide an unique username and a display name (e.g. your first and last name) and then present your
         FIDO2-token to register an account.
     </p>
-    <div>
+    <form>
         <input type="text" placeholder="Username (e.g. Email)" id="username">
-        <input type="text" placeholder="Display Name" id="dp-name">
+        <input type="text" placeholder="Display Name" id="display_name">
         <input type="button" value="Register" id="register">
-    </div>
+    </form>
     <div id="status">
         <div id="success" hidden>
-            Registration complete! Please proceed to the <a href="{{ url_for('login') }}">login</a>.
+            Registration complete! You'll be redirected to the login page.<br>
+            If this process takes more than five seconds, please use this <a href="{{ url_for('login') }}">login</a> link.
         </div>
         <div id="failure" hidden>
             There was an error processing your registration. Please try again.
+        </div>
+        <div id="too_short" hidden>
+            The chosen username or display name is too short. Please choose names > 1 character.
         </div>
     </div>
     <script type="module" src="{{ url_for('static', filename='register.js') }}"></script>
