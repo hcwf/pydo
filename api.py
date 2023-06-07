@@ -1,8 +1,6 @@
-'''
-    Author: H. Frederich (h.frederich@protonmail.com)
-    Date: 2023-06-07
-    Version: 1.0.0
-'''
+# Author: H. Frederich (h.frederich@protonmail.com)
+# Date: 2023-06-07
+# Version: 1.0.1
 
 from fido2.webauthn import PublicKeyCredentialRpEntity, PublicKeyCredentialUserEntity
 from fido2.server import Fido2Server
