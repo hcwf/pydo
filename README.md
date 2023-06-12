@@ -13,8 +13,7 @@ This is not for use in a production environment! Only run this server locally!
 
 ## How to Run
 
-1. Download or clone this repo, either by going to releases and downloading a provided zip (and unpacking it to a new
-directory) or running 
+1. Download or clone this repo, either by going to releases and downloading a provided zip or running 
 `git clone https://github.com/hcwf/pydo` in a new directory.
 2. Open a shell / terminal in the directory and install the requirements by running `pip install -r requirements.txt`.
 3. Start the server by running `py .\server.py`.

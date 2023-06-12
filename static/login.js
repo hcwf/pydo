@@ -1,7 +1,7 @@
 /**
  * Author: H. Frederich (h.frederich@protonmail.com)
  * Date: 2023-06-07
- * Version: 1.0.0
+ * Version: 1.0.1
  */
 
 import {get, parseRequestOptionsFromJSON} from './webauthn-json.browser-ponyfill.js';
