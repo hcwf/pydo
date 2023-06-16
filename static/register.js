@@ -1,7 +1,7 @@
 /**
  * Author: H. Frederich (h.frederich@protonmail.com)
- * Date: 2023-06-07
- * Version: 1.0.1
+ * Date: 2023-06-16
+ * Version: 1.0.2
  */
 
 import {create, parseCreationOptionsFromJSON} from './webauthn-json.browser-ponyfill.js';
@@ -26,9 +26,7 @@ async function register() {
     console.log('Fetch complete:', request.statusText);
     let json = await request.json();
 
-    const options = parseCreationOptionsFromJSON(json);
-
-    const response = await create(options);
+    const response = await create(parseCreationOptionsFromJSON(json));
 
     console.log('Completing registration')
     let result = await fetch('/api/register/complete', {

@@ -1,7 +1,7 @@
 /**
  * Author: H. Frederich (h.frederich@protonmail.com)
- * Date: 2023-06-07
- * Version: 1.0.1
+ * Date: 2023-06-16
+ * Version: 1.0.2
  */
 
 import {get, parseRequestOptionsFromJSON} from './webauthn-json.browser-ponyfill.js';
@@ -9,16 +9,11 @@ import {get, parseRequestOptionsFromJSON} from './webauthn-json.browser-ponyfill
 'use strict';
 
 async function authenticate() {
-    let userData = {
-        'username': document.getElementById('username').value
-    };
-
     let request = await fetch('/api/authenticate/begin', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(userData)
+        }
     });
     if(!request.ok) {
         document.getElementById('no_creds').hidden = false;
@@ -26,9 +21,7 @@ async function authenticate() {
 
     let json = await request.json();
 
-    let options = parseRequestOptionsFromJSON(json);
-
-    let response = await get(options);
+    let response = await get(parseRequestOptionsFromJSON(json));
 
     let result = await fetch('/api/authenticate/complete', {
         method: 'POST',

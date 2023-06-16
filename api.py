@@ -1,6 +1,6 @@
 # Author: H. Frederich (h.frederich@protonmail.com)
-# Date: 2023-06-07
-# Version: 1.0.1
+# Date: 2023-06-16
+# Version: 1.0.2
 
 from fido2.webauthn import PublicKeyCredentialRpEntity, PublicKeyCredentialUserEntity
 from fido2.server import Fido2Server
@@ -9,7 +9,7 @@ from flask import abort, Blueprint, jsonify, request, session
 
 import uuid
 
-from db import user_database
+from db import credential_storage, current_user
 
 # Creating a new relying party.
 relying_party = PublicKeyCredentialRpEntity(name='FIDO2 Server', id='localhost')
@@ -33,7 +33,7 @@ def api_register_begin():
             id=uuid.uuid4().bytes,
             display_name=request.json['display_name']
         ),
-        credentials=user_database,
+        credentials=credential_storage,
         user_verification='discouraged'
     )
 
@@ -55,13 +55,17 @@ def api_register_begin():
 def api_register_complete():
     print('Received API request:', request.json)
 
-    # Completing the registration by providing the curren state of the session and the user request.
+    # Completing the registration by providing the current state of the session and the user request.
     authenticator_data = server.register_complete(state=session['state'], response=request.json)
 
     print('Created credential data:', authenticator_data.credential_data)
 
-    # Adding the credentials to the "database".
-    user_database.append(authenticator_data.credential_data)
+    # Adding the credentials, username and display name to the "database".
+    credential_storage.append(authenticator_data.credential_data)
+    current_user.append(session.pop('username'))
+    current_user.append(session.pop('display_name'))
+
+    print(current_user)
 
     print('Registration complete!')
 
@@ -70,11 +74,11 @@ def api_register_complete():
 
 @bp.route('/authenticate/begin', methods=['POST'])
 def api_authenticate_begin():
-    if not user_database:
+    if not credential_storage:
         return abort(400, 'No credentials')
 
     # Beginning the authentication by loading the "database".
-    options, state = server.authenticate_begin(credentials=user_database)
+    options, state = server.authenticate_begin(credentials=credential_storage)
 
     # Saving the internal state provided by authenticate_begin() to the Flask session.
     session['state'] = state
@@ -86,18 +90,19 @@ def api_authenticate_begin():
 
 @bp.route('/authenticate/complete', methods=['POST'])
 def api_authenticate_complete():
-    if not user_database:
+    if not credential_storage:
         return abort(400, 'No credentials')
 
-    try:
-        # Completing the authentication by verifying the user assertion data.
-        # The state is removed from the session to make room for another registration.
-        server.authenticate_complete(
-            state=session.pop('state'),
-            credentials=user_database,
-            response=request.json
-        )
-    except:
-        return abort(400, 'Wrong client data')
+    # Completing the authentication by verifying the user assertion data.
+    # The state is removed from the session to make room for another registration.
+    server.authenticate_complete(
+        state=session.pop('state'),
+        credentials=credential_storage,
+        response=request.json
+    )
+
+    # Load the current user data into the session to be used by the server.
+    session['username'] = current_user[0]
+    session['display_name'] = current_user[1]
 
     return jsonify({'status': 'OK'})
